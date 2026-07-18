@@ -1,0 +1,403 @@
+/**
+ * GuardFlow — Popup Stylesheet (popup.css)
+ * ---------------------------------------------
+ * Modern, professional cybersecurity-dashboard theme for the extension
+ * popup. Dark navy surface, cyan "scan" accent, card-based layout,
+ * inline SVG icon accents (no external font/icon-library fetch — keeps
+ * the popup fully offline-safe).
+ *
+ * Pairs with popup.html's existing markup/IDs from Prompt 12. To use
+ * this file instead of the inline <style> block, replace popup.html's
+ * <style>...</style> with:
+ *   <link rel="stylesheet" href="popup.css" />
+ */
+
+:root {
+  /* Color tokens */
+  --bg: #0b1220;
+  --surface: #101a2c;
+  --surface-alt: #16223a;
+  --surface-raised: #1b2942;
+  --border: #223049;
+  --border-soft: #1a2740;
+
+  --text-primary: #e6edf7;
+  --text-muted: #7c8ba8;
+  --text-faint: #4c5b78;
+
+  --cyan: #34d8c4;
+  --cyan-dim: rgba(52, 216, 196, 0.14);
+  --amber: #f5a623;
+  --amber-dim: rgba(245, 166, 35, 0.14);
+  --red: #ef4444;
+  --red-dim: rgba(239, 68, 68, 0.14);
+  --green: #3dd68c;
+  --green-dim: rgba(61, 214, 140, 0.14);
+
+  /* Type */
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  width: 380px;
+  max-width: 100vw;
+}
+
+@media (max-width: 420px) {
+  body { width: 100vw; }
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--surface-alt), var(--surface));
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Signature element: rotating radar-sweep ring around the shield icon.
+   The single deliberate animated piece — everything else stays quiet. */
+.radar {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.radar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 260deg,
+    var(--cyan) 320deg,
+    transparent 360deg
+  );
+  animation: sweep 2.6s linear infinite;
+}
+
+.radar::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--bg);
+}
+
+.radar-dot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.radar-dot svg {
+  width: 14px;
+  height: 14px;
+}
+
+@keyframes sweep {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar::before { animation: none; }
+}
+
+.wordmark {
+  font-family: var(--mono);
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--text-primary);
+}
+
+.wordmark span { color: var(--cyan); }
+
+/* Connection badge (pill) */
+.conn-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px var(--space-2);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.conn-badge .pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-faint);
+}
+
+.conn-badge.is-connected { color: var(--green); border-color: rgba(61, 214, 140, 0.35); background: var(--green-dim); }
+.conn-badge.is-connected .pulse { background: var(--green); box-shadow: 0 0 0 3px var(--green-dim); }
+
+.conn-badge.is-connecting { color: var(--amber); border-color: rgba(245, 166, 35, 0.35); background: var(--amber-dim); }
+.conn-badge.is-connecting .pulse { background: var(--amber); animation: blink 1s ease-in-out infinite; }
+
+.conn-badge.is-disconnected { color: var(--red); border-color: rgba(239, 68, 68, 0.35); background: var(--red-dim); }
+.conn-badge.is-disconnected .pulse { background: var(--red); }
+
+@keyframes blink { 50% { opacity: 0.25; } }
+
+/* ============================================================
+   Cards / sections
+   ============================================================ */
+
+.section {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.section:last-of-type { border-bottom: none; }
+
+.label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 0 0 var(--space-2);
+}
+
+.value-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.mono-value {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.mono-value.muted { color: var(--text-muted); }
+
+.copy-btn {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 7px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.copy-btn:hover { color: var(--cyan); border-color: var(--cyan); }
+
+.url-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: 4px;
+}
+
+.risk-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--text-faint);
+}
+
+.risk-dot.safe { background: var(--green); box-shadow: 0 0 0 3px var(--green-dim); }
+.risk-dot.medium { background: var(--amber); box-shadow: 0 0 0 3px var(--amber-dim); }
+.risk-dot.high { background: var(--red); box-shadow: 0 0 0 3px var(--red-dim); }
+
+.stack-gap { margin-top: var(--space-4); }
+
+/* ============================================================
+   Stat grid (cards with icon accents)
+   ============================================================ */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.stat-tile {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  padding-left: 38px; /* room for icon */
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02) inset;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+/* Icon accents — inline SVG data-URIs, one per metric, no external
+   icon font/library dependency. Neutral/muted by default, tinted amber
+   only when the tile is flagged (count > 0 observed). */
+.stat-tile::before {
+  content: "";
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  width: 18px;
+  height: 18px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.55;
+}
+
+#tileKeywords::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237C8BA8' stroke-width='1.8'><path d='M12 2l1.6 5.2 5.2 1.6-5.2 1.6L12 16l-1.6-5.2-5.2-1.6 5.2-1.6z'/></svg>");
+}
+
+#tileForms::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237C8BA8' stroke-width='1.8'><rect x='4' y='3' width='16' height='18' rx='2'/><path d='M8 8h8M8 12h8M8 16h5'/></svg>");
+}
+
+#tileButtons::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237C8BA8' stroke-width='1.8'><rect x='3' y='8' width='18' height='8' rx='4'/></svg>");
+}
+
+#tileQr::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237C8BA8' stroke-width='1.8'><rect x='3' y='3' width='7' height='7'/><rect x='14' y='3' width='7' height='7'/><rect x='3' y='14' width='7' height='7'/><path d='M14 14h3v3M14 20h3M20 14v3M20 20v.01'/></svg>");
+}
+
+.stat-tile.is-flagged {
+  border-color: rgba(245, 166, 35, 0.4);
+  background: linear-gradient(180deg, var(--amber-dim), var(--surface));
+}
+
+.stat-tile.is-flagged::before { opacity: 0.9; }
+
+.stat-tile .stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.stat-tile .stat-value {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stat-tile.is-flagged .stat-value { color: var(--amber); }
+
+.stat-value.bool-yes { color: var(--red) !important; }
+.stat-value.bool-no { color: var(--text-muted) !important; }
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+}
+
+.footer .label { margin: 0; }
+
+.backend-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.backend-status .pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.backend-status.is-unreachable .pulse { background: var(--red); }
+.backend-status.is-unreachable .status-text { color: var(--red); }
+.backend-status.is-reachable .status-text { color: var(--green); }
+
+/* ============================================================
+   Accessibility / quality floor
+   ============================================================ */
+
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--cyan-dim);
+  color: var(--text-primary);
+}

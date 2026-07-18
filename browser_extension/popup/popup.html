@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>GuardFlow</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- Header: logo + live connection status -->
+    <header class="header">
+      <div class="brand">
+        <div class="radar" aria-hidden="true">
+          <div class="radar-dot">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3z"
+                    stroke="#34D8C4" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <span class="wordmark">GUARD<span>FLOW</span></span>
+      </div>
+
+      <div id="connectionBadge" class="conn-badge is-connecting" role="status" aria-live="polite">
+        <span class="pulse"></span>
+        <span id="connectionLabel">Connecting</span>
+      </div>
+    </header>
+
+    <!-- Session + analyzed URL -->
+    <section class="section">
+      <p class="label">Session</p>
+      <div class="value-row">
+        <span id="sessionId" class="mono-value" title="No active session">No active session</span>
+        <button class="copy-btn" id="copySessionBtn" type="button" aria-label="Copy session ID">Copy</button>
+      </div>
+
+      <div class="stack-gap">
+        <p class="label">Analyzed URL</p>
+        <div class="url-row">
+          <span id="riskDot" class="risk-dot" aria-hidden="true"></span>
+          <span id="analyzedUrl" class="mono-value muted" title="No page analyzed yet">No page analyzed yet</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detection metrics -->
+    <section class="section">
+      <p class="label">Observations</p>
+      <div class="stat-grid">
+        <div class="stat-tile" id="tileKeywords">
+          <span class="stat-label">Scam Keywords</span>
+          <span class="stat-value" id="statKeywords">0</span>
+        </div>
+        <div class="stat-tile" id="tileForms">
+          <span class="stat-label">Forms Detected</span>
+          <span class="stat-value" id="statForms">0</span>
+        </div>
+        <div class="stat-tile" id="tileButtons">
+          <span class="stat-label">Buttons Detected</span>
+          <span class="stat-value" id="statButtons">0</span>
+        </div>
+        <div class="stat-tile" id="tileQr">
+          <span class="stat-label">QR Detected</span>
+          <span class="stat-value bool-no" id="statQr">No</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debug: view the full last-scan JSON in a new tab -->
+    <section class="section">
+      <div class="value-row">
+        <p class="label" style="margin: 0;">Debug</p>
+        <button class="copy-btn" id="viewLastScanBtn" type="button">View last scan JSON</button>
+      </div>
+    </section>
+
+    <!-- Backend reachability -->
+    <footer class="footer">
+      <p class="label">Backend</p>
+      <div id="backendStatus" class="backend-status is-reachable">
+        <span class="pulse"></span>
+        <span class="status-text" id="backendStatusText">Reachable</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../utils/logger.js"></script>
+  <script src="../utils/constants.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
