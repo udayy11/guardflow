@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Modern Shield - Main Body -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,24 L82,34 V54 C82,74 54,84 54,84 C54,84 26,74 26,54 V34 Z" />
+
+    <!-- Pulse Monitoring Line (Flow & Energy) -->
+    <path
+        android:strokeColor="#00B8D4"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M38,56 H44 L49,44 L54,68 L59,56 H70" />
+
+    <!-- Radar/Scanning Arc (Monitoring) -->
+    <path
+        android:strokeColor="#00B8D4"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M44,44 A10,10 0 0,1 64,44" />
+
+    <!-- Radar Center Dot -->
+    <path
+        android:fillColor="#00B8D4"
+        android:pathData="M53,38 A1,1 0 1,1 55,38 A1,1 0 1,1 53,38" />
+</vector>

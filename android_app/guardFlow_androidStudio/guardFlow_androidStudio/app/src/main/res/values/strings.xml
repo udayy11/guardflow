@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">GuardFlow</string>
+    <string name="accessibility_service_description">GuardFlow monitors app interaction patterns to detect and block malicious security threats in real-time.</string>
+</resources>

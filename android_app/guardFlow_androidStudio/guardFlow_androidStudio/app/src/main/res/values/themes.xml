@@ -1,0 +1,4 @@
+<resources>
+
+    <style name="Theme.GuardFlow" parent="Theme.MaterialComponents.Light" />
+</resources>

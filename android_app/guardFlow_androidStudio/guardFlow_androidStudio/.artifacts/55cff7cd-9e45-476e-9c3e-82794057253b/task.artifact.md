@@ -1,0 +1,8 @@
+- [x] Update Data Models with Moshi annotations
+    - [x] `EventType.kt`
+    - [x] `GuardFlowEvent.kt`
+    - [x] `RiskResult.kt`
+- [x] Refactor `GuardFlowApiClient.kt` to Retrofit interface
+- [x] Update `DataProvider.kt` to initialize Retrofit
+- [x] Update `GuardFlowViewModel.kt` to use new API
+- [x] Verify changes (Build and run unit tests if possible)
